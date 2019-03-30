@@ -1,2 +1,2 @@
 # Psychic-Game
-Homeword-3
+Homework-3
