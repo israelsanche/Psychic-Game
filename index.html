@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Psychic Game</title>
+</head>
+
+<body>
+
+  <h1>Are you a Psychic Game!</h1>
+<h2>Guess What Letter I'm thinking of</h2>
+  <h3 id="score"></h3>
+  <h3 id="losses"></h3>
+  <h1 id="guessesleft"></h1>
+  <p id="livesleft"></p>
+  <p id="gameover"> </p>
+  <h1> Your Guesses so far</h1>
+  <h2 id="used">= </h2>
+  <h1>Correct Guesses</h1>
+  <h2 id="correct"> =</h2>
+
+
+  <script>
+
+    // VARIABLES
+    // ==========================================================================
+
+    // The array of questions for our quiz game.
+    var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+
+    // Keep track of wins.
+    var wins = 0;
+    // Keep track of losses.
+    var losses= 0;
+    // Keep track of guesses left, Start with 8 guesses on a new game.
+    var guesses= 8;
+// keep track of current letter being played
+    var currentletter = "";
+
+    var lettersused= "";
+
+    var totalwrongguess=0;
+    var gameover= 0;
+
+
+
+
+
+    
+
+    // FUNCTIONS
+    // ==============================================================================
+
+    // This will pick the random letter for guess game
+function RandomLetter() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+  for (var i = 0; i < letters.length; i++)
+    text = possible.charAt(Math.floor(Math.random() * possible.length));
+  return text.toLowerCase();
+
+  
+}
+// this is to ensure the random letter is picked and I know what it is
+// to Choose my current letter in game and console log it
+currentletter=RandomLetter();
+console.log("Starting Letter: " + currentletter);
+
+
+
+    // Function that updates the wins...
+    function updateScore() {
+      document.querySelector("#score").innerHTML = "Wins: " + wins;
+    }
+    // Function that updates the losses...
+    function updateloss() {
+      document.querySelector("#losses").innerHTML = "Loss: " + losses + " of 5 Lives";
+    }
+    // Function that updates the Guesses left:
+    function updateguess() {
+      document.querySelector("#guessesleft").innerHTML = "Guesses Left: " + guesses;
+    }
+
+    // To Show what letters have been used:
+    function usedletters() {
+        document.querySelector("#used").innerHTML += used + ", ";
+    }
+
+    // to reset game after game win or game over
+    function resetgame() {
+        wins=0;
+        losses=0;
+        guesses=8;
+        updateScore();
+        updateloss();
+        updateguess();
+        document.querySelector("#used").innerHTML ="";
+        document.querySelector("#correct").innerHTML ="";
+    }
+
+    // MAIN PROCESS
+    // ==============================================================================
+
+    // Calling functions to start the game.
+    RandomLetter();
+    updateScore();
+    updateloss();
+    updateguess();
+
+    // When the user presses a key, it will run the following function...
+    document.onkeyup = function(event) {
+
+
+      // Determine which key was pressed, make it lowercase, and set it to the userInput variable.
+      var userInput = event.key.toLowerCase();
+      var userInputUpper = event.key.toUpperCase();
+
+
+        // If they guess the correct answer, increase and update score, alert them they got it right.
+        if (userInput === currentletter) {
+          alert("Correct!");
+        //   show log to see if right
+          console.log("Correct Guess "+ userInput)
+        //   update wins
+          wins++;
+        //   this will change the visible score
+          updateScore();
+        //   since user guessed right, guesses will reset to 8 for next letter
+          guesses=8;
+          updateguess();
+          var used = userInputUpper;
+            // this will show and add the guesses if answer has been wrong
+            document.querySelector("#correct").innerHTML += used + ", ";
+        //   this will choose a new letter
+          currentletter=RandomLetter();
+        //   this will tell me what the new letter is
+          console.log("New Letter: " + currentletter);
+        //   this will reset used letters once user guesses correct
+          document.querySelector("#used").innerHTML ="=";
+        //   this will end the game with user winning
+          if (wins=== 5){
+              alert("Congratulations, You've Won!!! Press OK to Reset!");
+              resetgame();
+          }
+          
+        }
+        // If wrong, alert user is wrong.
+        else {
+            // this will show what was pressed and if wrong in console to keep track
+            console.log("Wrong Guess " +userInput);
+            // creates variable for what user pressed to then keep track
+            var used = userInputUpper;
+            // this will show and add the guesses if answer has been wrong
+            document.querySelector("#used").innerHTML += used + ", ";
+            // removes a guess from guesses left
+            guesses--;        
+            // tells user they guessed wrong
+          alert("Wrong!");
+        //   updates visually the guess count
+          updateguess();
+        //   updates visually the loss count
+          updateloss();
+        //   once the guesses are out it will change loss count up until lives are out
+          if (guesses === 0) {
+              losses++;
+              updateloss();
+            //   will display every time guesses are out but not game over
+              if (losses<= 4){
+              alert("Out of Guesses, You Lost a Life!!! Try Again!");}
+
+              guesses=8;
+              updateguess();
+            //   will display game over and reset game
+              if (losses===5){
+                  alert("Game Over, Press ok to Restart Game!");
+                  gameover++;
+                  document.querySelector("#gameover").innerHTML = "Game Over Count: " + gameover;
+                  resetgame();
+              }
+          }
+
+        // }
+
+        // Increment the questionIndex variable and call the renderQuestion function.
+        if (losses===5){
+            resetgame();
+        };
+
+      }
+
+    };
+
+  </script>
+
+</body>
+
+</html>
