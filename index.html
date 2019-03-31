@@ -10,6 +10,7 @@
 
   <h1>Are you a Psychic Game!</h1>
 <h2>Guess What Letter I'm thinking of</h2>
+<h3 id="getstarted">Press any Key to get started</h3>
   <h3 id="score"></h3>
   <h3 id="losses"></h3>
   <h1 id="guessesleft"></h1>
@@ -112,8 +113,8 @@ console.log("Starting Letter: " + currentletter);
 
     // When the user presses a key, it will run the following function...
     document.onkeyup = function(event) {
-
-
+        // this will remove the press any key message
+        document.querySelector("#getstarted").innerHTML ="";
       // Determine which key was pressed, make it lowercase, and set it to the userInput variable.
       var userInput = event.key.toLowerCase();
       var userInputUpper = event.key.toUpperCase();
